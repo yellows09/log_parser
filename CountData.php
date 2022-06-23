@@ -29,7 +29,7 @@ class CountData
      */
     public function countUniqueURL(): int
     {
-        preg_match_all('~http:\/\/\S+~', $this->file, $matches);
+        preg_match_all(FIND_URL, $this->file, $matches);
         $uniqueUrl = count(array_unique($matches[0]));
         return $uniqueUrl;
     }
@@ -56,10 +56,10 @@ class CountData
     public function countTraffic()
     {
         $traffic = 0;
-        preg_match_all('#\"\s[0-9]{0,3}\s[0-9]{0,9}\s\"#', $this->file, $matches);
+        preg_match_all(FIND_TRAFFIC, $this->file, $matches);
         foreach ($matches[0] as $match) {
             $withoutQuotesAtTheBeginning = mb_substr($match, 6);
-            preg_match_all('#[0-9]{0,9}\s#',$withoutQuotesAtTheBeginning,$withoutQuotesAtTheEnd);
+            preg_match_all(FIND_TRAFFIC_WITHOUT_QUOTES,$withoutQuotesAtTheBeginning,$withoutQuotesAtTheEnd);
             foreach($withoutQuotesAtTheEnd as $item=>$value){
                 foreach ($value as $key){
                     $traffic += $key;
